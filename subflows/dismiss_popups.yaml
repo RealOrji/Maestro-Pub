@@ -1,0 +1,14 @@
+appId: org.wikipedia
+---
+# First-time users get feature-discovery popups. They're not what we're
+# testing, so close whichever one is on screen and move on.
+- runFlow:
+    when:
+      visible: "A Faster way to Search"
+    commands:
+      - tapOn: "Close"
+- runFlow:
+    when:
+      visible: "Got it"
+    commands:
+      - tapOn: "Got it"

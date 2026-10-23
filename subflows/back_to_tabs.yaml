@@ -1,0 +1,10 @@
+appId: org.wikipedia
+---
+# Press back until the bottom navigation is showing again, however deep we are.
+- repeat:
+    while:
+      notVisible:
+        id: "org.wikipedia:id/nav_tab_home"
+    times: 5
+    commands:
+      - back

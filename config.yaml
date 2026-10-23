@@ -1,0 +1,15 @@
+# Workspace config: `maestro test .` reads this file.
+# Only top-level flows are run; everything in subflows/ is pulled in via runFlow.
+flows:
+  - "flows/**"
+
+# Run order matters only for readability of the report; every flow
+# starts from a clean app state, so they don't depend on each other.
+executionOrder:
+  continueOnFailure: true
+  flowsOrder:
+    - onboarding
+    - bottom_navigation
+    - search_article
+    - search_no_results
+    - save_article

@@ -1,0 +1,33 @@
+appId: org.wikipedia
+name: search_article
+tags:
+  - smoke
+  - search
+env:
+  # Defaults, overridable from the CLI (a plain value here would win over -e), e.g.
+  # maestro test flows/search/search_article.yaml -e SEARCH_TERM=Abuja -e EXPECTED_DESCRIPTION="Capital of the Federal Republic of Nigeria"
+  SEARCH_TERM: ${SEARCH_TERM || 'Lagos'}
+  EXPECTED_DESCRIPTION: ${EXPECTED_DESCRIPTION || 'Most populous city in Nigeria'}
+---
+# Search for an article, open it from the results, and check the right page loaded.
+- runFlow: ../../subflows/fresh_start.yaml
+- runFlow:
+    file: ../../subflows/search_for.yaml
+    env:
+      QUERY: ${SEARCH_TERM}
+
+# Results come from the live API - give them time.
+- extendedWaitUntil:
+    visible: ${EXPECTED_DESCRIPTION}
+    timeout: 20000
+- tapOn: ${EXPECTED_DESCRIPTION}
+
+# The article body is a WebView; its short description has a stable id.
+- extendedWaitUntil:
+    visible:
+      id: "pcs-edit-section-title-description"
+      text: ${EXPECTED_DESCRIPTION}
+    timeout: 30000
+- runFlow: ../../subflows/dismiss_popups.yaml
+- assertVisible: "Find in article"
+- takeScreenshot: search_article_opened

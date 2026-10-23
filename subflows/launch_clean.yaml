@@ -1,0 +1,8 @@
+appId: org.wikipedia
+---
+# Wipe app data so every test starts as a first-time user.
+- clearState
+- launchApp
+- extendedWaitUntil:
+    visible: "All the world's knowledge"
+    timeout: 30000

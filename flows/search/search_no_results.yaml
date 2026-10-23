@@ -1,0 +1,25 @@
+appId: org.wikipedia
+name: search_no_results
+tags:
+  - regression
+  - search
+  - negative
+---
+# Nonsense query -> "No results"; clearing the query clears the message.
+- runFlow: ../../subflows/fresh_start.yaml
+- runScript: ../../scripts/random_query.js
+- runFlow:
+    file: ../../subflows/search_for.yaml
+    env:
+      QUERY: ${output.query}
+
+- extendedWaitUntil:
+    visible: "No results"
+    timeout: 20000
+- takeScreenshot: search_no_results
+
+- tapOn: "Clear query"
+- assertNotVisible: "No results"
+- assertVisible:
+    id: "org.wikipedia:id/search_src_text"
+    text: ""

@@ -1,0 +1,13 @@
+# Maestro run output
+.maestro/
+report*.xml
+report*.html
+*.apk
+screenshots/
+recordings/
+debug-output/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

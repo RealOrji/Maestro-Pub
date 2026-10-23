@@ -1,0 +1,39 @@
+appId: org.wikipedia
+name: bottom_navigation
+tags:
+  - smoke
+  - navigation
+---
+# Every bottom-nav tab opens the screen it's labelled for.
+- runFlow: ../../subflows/fresh_start.yaml
+
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_reading_lists"
+- assertVisible: "All articles"
+- assertVisible: "Collections"
+
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_search"
+- runFlow: ../../subflows/dismiss_popups.yaml
+- assertVisible:
+    id: "org.wikipedia:id/search_card"
+- assertVisible: "No recently viewed articles"
+
+# Activity shows a one-time intro before the real screen.
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_edits"
+- assertVisible: "Introducing Activity"
+- tapOn: "Continue"
+- assertVisible: "Create account"
+
+# "More" is a bottom sheet, not a screen - close it before moving on.
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_more"
+- assertVisible: "Settings"
+- assertVisible: "Donate"
+- back
+
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_home"
+- assertVisible: "For you"
+- takeScreenshot: bottom_navigation_home

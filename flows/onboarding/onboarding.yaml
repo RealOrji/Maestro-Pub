@@ -1,0 +1,15 @@
+appId: org.wikipedia
+name: onboarding
+tags:
+  - smoke
+  - onboarding
+---
+# A brand-new user can get through first-run onboarding and land on the home feed.
+- runFlow: ../../subflows/launch_clean.yaml
+- runFlow: ../../subflows/complete_onboarding.yaml
+
+- assertVisible: "Community"
+- assertVisible: "For you"
+- assertVisible:
+    id: "org.wikipedia:id/nav_tab_search"
+- takeScreenshot: onboarding_home_feed

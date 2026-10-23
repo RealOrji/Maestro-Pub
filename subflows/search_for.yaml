@@ -1,0 +1,9 @@
+appId: org.wikipedia
+---
+# Params: QUERY - text to type into the search box.
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_search"
+- runFlow: dismiss_popups.yaml
+- tapOn:
+    id: "org.wikipedia:id/search_card"
+- inputText: ${QUERY}

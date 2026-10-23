@@ -1,0 +1,37 @@
+appId: org.wikipedia
+name: save_article
+tags:
+  - regression
+  - saved
+env:
+  SEARCH_TERM: ${SEARCH_TERM || 'Lagos'}
+  EXPECTED_DESCRIPTION: ${EXPECTED_DESCRIPTION || 'Most populous city in Nigeria'}
+---
+# Save an article from its page, then find it under the Saved tab.
+- runFlow: ../../subflows/fresh_start.yaml
+- runFlow:
+    file: ../../subflows/search_for.yaml
+    env:
+      QUERY: ${SEARCH_TERM}
+- extendedWaitUntil:
+    visible: ${EXPECTED_DESCRIPTION}
+    timeout: 20000
+- tapOn: ${EXPECTED_DESCRIPTION}
+- extendedWaitUntil:
+    visible:
+      id: "pcs-edit-section-title-description"
+    timeout: 30000
+- runFlow: ../../subflows/dismiss_popups.yaml
+
+- tapOn: "Save"
+# First save opens a collections sheet with the article marked as saved.
+- assertVisible: "Collect the articles you love"
+- assertVisible: "Saved"
+
+- runFlow: ../../subflows/back_to_tabs.yaml
+- tapOn:
+    id: "org.wikipedia:id/nav_tab_reading_lists"
+- assertVisible: "All articles"
+- assertVisible: ${SEARCH_TERM}
+- assertVisible: ${EXPECTED_DESCRIPTION}
+- takeScreenshot: save_article_in_saved_tab
